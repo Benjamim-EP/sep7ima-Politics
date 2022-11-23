@@ -12,6 +12,8 @@ exports.up = function(knex, Promise) {
         table.string('UrlPaginaParlamentar')
         table.string('UrlPaginaParticular')
         table.string('EmailParlamentar')
+        table.string('UF-mandato')
+        
         
 
     })
