@@ -1,4 +1,7 @@
 
+
+
+
 const url = "https://legis.senado.leg.br/dadosabertos/senador/"
 
 async function getAllSenators(componente){
