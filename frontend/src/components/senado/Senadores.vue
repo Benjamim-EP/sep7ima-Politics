@@ -13,6 +13,10 @@
 <script>
 import SenadoresItem from '../parlamentares/SenadoresItem.vue'
 
+import axios from 'axios'
+
+let baseApiUrl = "http://localhost:3000"
+
 export default {
     name: 'Senadores',
     components: {SenadoresItem},
@@ -46,7 +50,16 @@ export default {
             
             this.parlamentares = [...xmlDoc.getElementsByTagName('Parlamentar')]
             
+        },
+        loadSenadores() {
+            const url = `${baseApiUrl}/senadores`
+            axios.get(url).then(res => {
+                this.parlamentares = res.data
+            })
         }
+    },
+    mounted(){
+        this.loadSenadores()
     }
 }
 </script>

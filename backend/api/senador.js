@@ -2,11 +2,16 @@
 
 module.exports = app => {
     
-    const save = (req,res) => {
-        res.send('senador save')
-    }
+   
     
-    return {save}
+    const get = (req,res) => {
+        app.db('senadores')
+            .select('CodigoParlamentar')
+            .then(senadores => res.json(senadores))
+    }
+
+
+    return {get}
 
     
 }
