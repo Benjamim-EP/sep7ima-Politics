@@ -7,6 +7,7 @@
                 </div>
             </div>
         <b-button variant="primary" @click="update">Atualizar</b-button>
+        <b-button variant="primary" @click="save">Salvar no banco de dados</b-button>
     </div>
 </template>
 
@@ -22,7 +23,8 @@ export default {
     components: {SenadoresItem},
     data: function(){
         return{
-            parlamentares:[]
+            parlamentares:[],
+            parlamentar: {}
             /*parlamentar:{
                 'CodigoParlamentar': NaN,
                 'CodigoPublicoNaLegAtual':NaN,
@@ -48,14 +50,24 @@ export default {
             let parser = new DOMParser(),
                 xmlDoc = parser.parseFromString(data,'text/xml')
             
-            this.parlamentares = [...xmlDoc.getElementsByTagName('Parlamentar')]
+            this.parlamentares = [...xmlDoc.getElementsByTagName('IdentificacaoParlamentar')]
             
+            this.parlamentar = this.parlamentares[0].getElementsByTagName('CodigoParlamentar')
+            this.parlamentar.codigoParlamentar = this.parlamentar[0].innerHTML
+                      
         },
         loadSenadores() {
             const url = `${baseApiUrl}/senadores`
             axios.get(url).then(res => {
                 this.parlamentares = res.data
             })
+        },
+        save(){
+          
+            const method = this.parlamentar.codigoParlamentar? 'put':'post'
+            const id = this.parlamentar.codigoParlamentar ? `/${this.parlamentar.codigoParlamentar}`:''
+
+            axios[method](`${baseApiUrl}/senadores${id}`,this.parlamentar)
         }
     },
     mounted(){

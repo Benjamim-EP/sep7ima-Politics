@@ -2,8 +2,8 @@
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('senadores', table => {
         table.increments('id').primary()
-        table.integer('CodigoParlamentar').notNull()
-        table.integer('CodigoPublicoNaLegAtual').notNull()
+        table.integer('codigoparlamentar').notNull()
+        /*table.integer('CodigoPublicoNaLegAtual')
         table.string('NomeParlamentar')
         table.string('NomeCompletoParlamentar')
         table.string('SexoParlamentar')
@@ -12,7 +12,7 @@ exports.up = function(knex, Promise) {
         table.string('UrlPaginaParlamentar')
         table.string('UrlPaginaParticular')
         table.string('EmailParlamentar')
-        table.string('UF-mandato')
+        table.string('UF-mandato')*/
         
         
 
