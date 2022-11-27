@@ -52,9 +52,19 @@ export default {
             
             this.parlamentares = [...xmlDoc.getElementsByTagName('IdentificacaoParlamentar')]
             
-            this.parlamentar = this.parlamentares[0].getElementsByTagName('CodigoParlamentar')
-            this.parlamentar.codigoParlamentar = this.parlamentar[0].innerHTML
-                      
+            this.parlamentares.map((valores) => {
+
+                    let parlamentar = {"nomeparlamentar" :valores.getElementsByTagName('NomeParlamentar')[0].innerHTML,
+                                        "codigoparlamentar": valores.getElementsByTagName('CodigoParlamentar')[0].innerHTML
+                                      }
+                       
+                    const method = parlamentar.codigoparlamentar? 'put':'post'
+                    const codigoparlamentar = parlamentar.codigoparlamentar ? `/${parlamentar.codigoparlamentar}`:''
+                        
+                    axios[method](`${baseApiUrl}/senadores${codigoparlamentar}`,parlamentar)
+
+            })
+          
         },
         loadSenadores() {
             const url = `${baseApiUrl}/senadores`
@@ -62,13 +72,7 @@ export default {
                 this.parlamentares = res.data
             })
         },
-        save(){
-          
-            const method = this.parlamentar.codigoParlamentar? 'put':'post'
-            const id = this.parlamentar.codigoParlamentar ? `/${this.parlamentar.codigoParlamentar}`:''
-
-            axios[method](`${baseApiUrl}/senadores${id}`,this.parlamentar)
-        }
+        
     },
     mounted(){
         this.loadSenadores()
