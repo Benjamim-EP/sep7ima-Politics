@@ -1,6 +1,8 @@
 <template>
-    <div class="box-principal">
-        {{parlamentar.getElementsByTagName("CodigoParlamentar")[0].textContent}}
+    <div class="senador-item">
+        <router-link :to="{name: 'senadoresByCod',params:{codigoparlamentar:parlamentar.codigoparlamentar}}">
+           {{parlamentar.codigoparlamentar}}
+        </router-link>
     </div>
 </template>
 
@@ -13,10 +15,5 @@ export default {
 </script>
 
 <style>
-.box-principal{
-    border: solid dodgerblue;
-    height: 80px;
-    width: 80px;  
-    padding: 25%;
-}
+
 </style>

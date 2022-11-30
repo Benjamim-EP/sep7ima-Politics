@@ -1,13 +1,14 @@
 <template>
     <div class="senadores">
         <h1>Senadores</h1>
-            <div class="box">
-                <div v-for="parlamentar in parlamentares" :key="parlamentar">
-                    <SenadoresItem :parlamentar="parlamentar" />
+        <div class="box">
+            <div v-for="parlamentar in parlamentares" :key="parlamentar.codigoparlamentar">
+                <div class="box-principal">
+                    <SenadoresItem :parlamentar="parlamentar"/>
                 </div>
             </div>
+        </div>
         <b-button variant="primary" @click="update">Atualizar</b-button>
-        <b-button variant="primary" @click="save">Salvar no banco de dados</b-button>
     </div>
 </template>
 
@@ -76,6 +77,7 @@ export default {
     },
     mounted(){
         this.loadSenadores()
+        
     }
 }
 </script>
@@ -85,5 +87,11 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+}
+.box-principal{
+    border: solid dodgerblue;
+    height: 80px;
+    width: 80px;  
+    padding: 25%;
 }
 </style>

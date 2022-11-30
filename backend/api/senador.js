@@ -25,9 +25,9 @@ module.exports = app => {
 
     const getById = (req, res) => {
         app.db('senadores')
-            .select('codigoparlamentar')
-            .where({codigoParlamentar: req.params.codigoparlamentar})
+            .where({ codigoparlamentar: req.params.codigoparlamentar})
             .first()
+            .then(parlamentar => res.json(parlamentar))
     }
 
     return {save,get,getById}
