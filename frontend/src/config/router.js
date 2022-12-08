@@ -28,7 +28,8 @@ const routes = [
         name: 'pronunciamentos',
         path: '/pronunciamentos',
         component: Pronunciamentos
-    }
+    },
+    
 ]
 
 const router = new VueRouter({

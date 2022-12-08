@@ -8,4 +8,11 @@ module.exports = app => {
         .put(app.api.senador.save)
         .get(app.api.senador.getById)
 
+    app.route('/pronunciamentos')
+        .post(app.api.pronunciamento.save)
+        .get(app.api.pronunciamento.get)
+    
+    app.route('/pronunciamentos/:codigopronunciamento')
+        .put(app.api.pronunciamento.save)
+        .get(app.api.pronunciamento.getById)
 }
