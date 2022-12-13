@@ -18,7 +18,7 @@ module.exports = app =>{
 
     const get = (req, res) => {
         app.db('pronunciamentos')
-            .select('codigopronunciamento','indexacao')
+            .select('codigopronunciamento','indexacao','data','resumo','codigoparlamentar','textointegral')
             .then(pronunciamentos => res.json(pronunciamentos))
     }
     const getById = (req, res) => {

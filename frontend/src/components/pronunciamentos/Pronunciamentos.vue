@@ -1,9 +1,7 @@
 <template>
   <div>
     <h1>Pronunciamentos</h1>
-    <div v-for="pronunciamento in pronunciamentos" :key="pronunciamento.codigopronunciamento">
-         <a href="">{{pronunciamento.codigopronunciamento}}</a>
-    </div>
+    
 </div>
 </template>
 
@@ -44,7 +42,7 @@ export default {
                         }
                 const method = pronunciamento.codigopronunciamento? 'put':'post'
                 const codigopronunciamento = pronunciamento.codigopronunciamento? `/${pronunciamento.codigopronunciamento}`:''
-
+                
                 axios[method](`${baseApiUrl}/pronunciamentos${codigopronunciamento}`,pronunciamento)
                 
             })
@@ -57,9 +55,23 @@ export default {
             })
 
         },
+        async fetchTextoCompleto(){
+            const response = await fetch('https://www25.senado.leg.br/web/atividade/pronunciamentos/-/p/pronunciamento/441003')
+            let data = await response.text()
+            let parser = new DOMParser(),
+                htmlDoc = parser.parseFromString(data,'text/html')
+            
+            let div = htmlDoc.getElementsByClassName('texto-integral')
+            let p = div[0].querySelectorAll('p')
+            let p2 = Array.from(p)
+            let textos = p2.map((valores) =>{
+                return valores.textContent
+            }) 
+            console.log(textos)
+        }
     },
     mounted(){
-        this.loadPronunciamentos()
+        this.fetchTextoCompleto()
     }
 
 }
