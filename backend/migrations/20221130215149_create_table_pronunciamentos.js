@@ -7,7 +7,8 @@ exports.up = function(knex, Promise) {
         table.string('indexacao',2048)
         table.integer('codigoparlamentar')
         table.integer('codigopronunciamento').notNull()
-        table.string('textointegral')
+        table.string('textointegralurl')
+        table.string('textointegral',2048)
     })
 };
 

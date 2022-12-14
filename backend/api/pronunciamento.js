@@ -13,12 +13,11 @@ module.exports = app =>{
                 .insert(pronunciamento)
                 .then(_ => res.status(204).send())
         }
-        console.log(req.params.codigopronunciamento)
     }
 
     const get = (req, res) => {
         app.db('pronunciamentos')
-            .select('codigopronunciamento','indexacao','data','resumo','codigoparlamentar','textointegral')
+            .select('codigopronunciamento','indexacao','data','resumo','codigoparlamentar','textointegralurl','textointegral')
             .then(pronunciamentos => res.json(pronunciamentos))
     }
     const getById = (req, res) => {
