@@ -15,4 +15,13 @@ module.exports = app => {
     app.route('/pronunciamentos/:codigopronunciamento')
         .put(app.api.pronunciamento.save)
         .get(app.api.pronunciamento.getById)
+    
+    app.route('/textocompleto')
+        .post(app.api.textocompleto.save)
+        .get(app.api.textocompleto.get)
+    
+    app.route('/textocompleto/:discursoId')
+        .put(app.api.textocompleto.save)
+        .get(app.api.textocompleto.getById)
+    
 }
