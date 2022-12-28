@@ -2,19 +2,19 @@
 module.exports = app =>{
 
     const save = async (req,res) => {
+        let n = 0
         const pronunciamento = {...req.body}
-        if(req.params.codigopronunciamento) pronunciamento.codigopronunciamento = req.params.codigopronunciamento
+        if(req.params.discursoId) pronunciamento.discursoId = req.params.D=discursoId
         
         const parFromDb = await app.db('discursocompleto')
             .where({'paragrafo':pronunciamento.paragrafo})
             .first()
             
         
-        if(!parFromDb){
-            app.db('discursocompleto')
+    
+        app.db('discursocompleto')
                 .insert(pronunciamento)
                 .then(_ => res.status(204).send())
-        }
     }
 
     const get = (req, res) => {

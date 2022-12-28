@@ -2,7 +2,6 @@
   <div>
     <h1>Pronunciamentos</h1>
     <b-button variant="primary" @click="update">Atualizar</b-button>
-    <b-button variant="primary" @click="fetchTextoCompleto">Texto completo</b-button>
     
 </div>
 </template>
@@ -24,7 +23,7 @@ export default {
     methods:{
         async update(){
             let Url = 'https://legis.senado.leg.br/dadosabertos/plenario/lista/discursos'
-            const response = await fetch(Url+'/2018'+'02'+'01'+'/2018'+'02'+'05') // AAAAMMDD
+            const response = await fetch(Url+'/2018'+'02'+'01'+'/2018'+'03'+'01') // AAAAMMDD
             let data = await response.text()
 
             let parser = new DOMParser(),
@@ -60,42 +59,47 @@ export default {
         async loadPronunciamentos() {
             const url = `${baseApiUrl}/pronunciamentos`
             this.pronunciamentos = (await axios.get(url)).data
-            this.fetchTextoCompleto()
-
-
-        },
-        fetchTextoCompleto(){
+            let a = this.fetchTextoCompleto() // retorna um array de promises
+            a.then((b) => this.textoToDb(b) )
             console.log(this.pronunciamentos.length)
-            this.pronunciamentos.map(async (valor)=>{
+            
+        },
 
-                    const resposta= await fetch(valor.textointegralurl)
-                    let dados= await resposta.text()
+        async fetchTextoCompleto(){
+            let paragrafos = this.pronunciamentos.map(async (valor)=>{
 
-                    let parsar = new DOMParser(),
-                        htmlDoc = parsar.parseFromString(dados,'text/html')
-                    
-                    let div = htmlDoc.getElementsByClassName('texto-integral')
-                    let p = div[0].querySelectorAll('p')
-                    let p2 = Array.from(p)
-                    
-                    setInterval(() => {
-                        console.log('carregando mais',p2.length)
-                        let textos = p2.map((valores) =>{
-                    
-                            let completo = {"discursoId":valor.codigopronunciamento,"paragrafo":valores.textContent}
-                            this.textoscompletos[completo.discursoId] = completo 
-                            
-                            const method = valor.codigopronunciamento? 'put':'post'
-                            const codigopronunciamento = valor.codigopronunciamento? `/${valor.codigopronunciamento}`:''
-                            //console.log(completo)
-                            axios[method](`${baseApiUrl}/textocompleto${codigopronunciamento}`,completo)
-                        })
+                const resposta= await fetch(valor.textointegralurl)
+                let dados= await resposta.text()
 
-                    }, 3000);
+                let parsar = new DOMParser(),
+                    htmlDoc = parsar.parseFromString(dados,'text/html')
                     
+                let div = htmlDoc.getElementsByClassName('texto-integral')
+                let p = div[0].querySelectorAll('p')
+                let p2 = Array.from(p)
+                return [p2,valor.codigopronunciamento]
+                
             })
+            return paragrafos
+        
+        },
+        textoToDb(a){
+            a.map((b)=> {
+                b.then(c=>{return c})
+                .then(d=>{
+                    //console.log(d[0].length)
+                    d[0].map((valor)=>{
 
-          
+                        let completo = {"discursoId":d[1],"paragrafo":valor.textContent}
+                        this.textoscompletos[completo.discursoId] = completo 
+                        const method = valor.codigopronunciamento? 'put':'post'
+                        const codigopronunciamento = valor.codigopronunciamento? `/${valor.codigopronunciamento}`:''
+                        console.log(completo)
+                        axios[method](`${baseApiUrl}/textocompleto${codigopronunciamento}`,completo)
+                    })
+                            
+                })
+            })
         }
     },
     mounted(){
